@@ -1,0 +1,10 @@
+BasedOnStyle: LLVM
+AccessModifierOffset: -4
+BreakBeforeBraces: Allman
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 120
+PointerAlignment: Left
+AlwaysBreakTemplateDeclarations: Yes
+BreakConstructorInitializers: BeforeColon
+AllowShortFunctionsOnASingleLine: None
