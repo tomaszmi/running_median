@@ -315,4 +315,18 @@ TEST(HeapStorage, accessors)
     EXPECT_EQ(123, *storage.data());
 }
 
+TEST(HeapStorage, swap)
+{
+    constexpr std::size_t storageSize = 10;
+    HeapStorage<int> storage;
+    for(int i = 0; i < static_cast<int>(storageSize); i++)
+    {
+        storage.push_back(i);
+    }
+    storage.swap(0, 9);
+    storage.swap(1, 8);
+    storage.swap(2, 7);
+    EXPECT_THAT(storage, ElementsAreArray(std::initializer_list<int>{9, 8, 7, 3, 4, 5, 6, 2, 1, 0}));
+}
+
 } // anonymous namespace

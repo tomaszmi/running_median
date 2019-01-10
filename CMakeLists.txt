@@ -5,6 +5,7 @@ project(running_median VERSION 0.0.1)
 option(ENABLE_TESTS "Build tests" ON)
 option(ENABLE_SANITIZERS "Enables/disables various sanitizers" OFF)
 
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror")
 if(ENABLE_SANITIZERS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer")

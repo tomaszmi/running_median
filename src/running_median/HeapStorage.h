@@ -45,8 +45,9 @@ public:
 
     // modifiers
     void push_back(value_type item);
-    void pop_back();
-    void clear();
+    void pop_back() noexcept;
+    void clear() noexcept;
+    void swap(size_type a, size_type b) noexcept;
 
     // capacity
     bool empty() const noexcept;
@@ -218,16 +219,24 @@ void HeapStorage<T>::push_back(value_type item)
 }
 
 template <typename T>
-void HeapStorage<T>::pop_back()
+void HeapStorage<T>::pop_back() noexcept
 {
     assert(storage_size_ > 0);
     --storage_size_;
 }
 
 template <typename T>
-void HeapStorage<T>::clear()
+void HeapStorage<T>::clear() noexcept
 {
     storage_size_ = 0;
+}
+
+template <typename T>
+void HeapStorage<T>::swap(size_type a, size_type b) noexcept
+{
+    const auto tmp = *(storage_ + b);
+    *(storage_ + b) = *(storage_ + a);
+    *(storage_ + a) = tmp;
 }
 
 template <typename T>
