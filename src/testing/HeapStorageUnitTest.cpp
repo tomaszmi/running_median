@@ -299,6 +299,9 @@ TEST(HeapStorage, supportedTypes)
     EXPECT_TRUE((isTypeSupported<int, int, char>()));
     EXPECT_TRUE((isTypeSupported<int, char, int>()));
     EXPECT_FALSE((isTypeSupported<short, int, long, double>()));
+    EXPECT_TRUE((isTypeSupported<volatile int, int>()));
+    EXPECT_TRUE((isTypeSupported<const int, int>()));
+    EXPECT_TRUE((isTypeSupported<const volatile int, int>()));
 }
 
 } // anonymous namespace

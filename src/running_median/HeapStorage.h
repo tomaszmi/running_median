@@ -20,6 +20,36 @@ struct FalseType
     static constexpr bool value = false;
 };
 
+template <typename T>
+struct RemoveConst
+{
+    using type = T;
+};
+
+template <typename T>
+struct RemoveConst<const T>
+{
+    using type = T;
+};
+
+template <typename T>
+struct RemoveVolatile
+{
+    using type = T;
+};
+
+template <typename T>
+struct RemoveVolatile<volatile T>
+{
+    using type = T;
+};
+
+template <typename T>
+struct RemoveCV
+{
+    using type = typename RemoveVolatile<typename RemoveConst<T>::type>::type;
+};
+
 template <typename T, typename U>
 struct IsSame : FalseType
 {
@@ -39,7 +69,7 @@ constexpr bool isTypeSupportedImpl()
 template <typename T, typename Head, typename... Ts>
 constexpr bool isTypeSupportedImpl()
 {
-    return IsSame<T, Head>::value or isTypeSupportedImpl<T, Ts...>();
+    return IsSame<typename RemoveCV<T>::type, typename RemoveCV<Head>::type>::value or isTypeSupportedImpl<T, Ts...>();
 }
 
 template <typename T, typename... Ts>
