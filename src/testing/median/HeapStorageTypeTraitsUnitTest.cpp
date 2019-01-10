@@ -1,4 +1,4 @@
-#include "HeapStorageTypeTraits.h"
+#include "median/HeapStorageTypeTraits.h"
 #include <gtest/gtest.h>
 
 namespace

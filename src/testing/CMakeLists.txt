@@ -6,10 +6,13 @@ add_executable(
     median/HeapStorageTypeTraitsUnitTest
     median/HeapUnitTest
     median/MedianCalculatorUnitTest
+    median/MedianCalculatorRegressionTest
+    events/EventLoopUnitTest
 )
 
 target_link_libraries(running_median_ut
-    running_median
+    median
+    events
     gtest_main
     gmock
 )
