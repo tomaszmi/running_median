@@ -85,6 +85,8 @@ public:
     using value_type = T;
     using pointer = T*;
     using const_pointer = T*;
+    using reference = value_type&;
+    using const_reference = const value_type&;
     using iterator = T*;
     using const_iterator = const T*;
     using size_type = std::size_t;
@@ -98,31 +100,41 @@ public:
     HeapStorage& operator=(const HeapStorage& other);
     HeapStorage& operator=(HeapStorage&& other) noexcept;
 
-    void reserve(size_type capacity);
+    // element access
+    reference operator[](size_type pos) noexcept;
+    const_reference operator[](size_type pos) const noexcept;
+    reference front() noexcept;
+    const_reference front() const noexcept;
+    reference back() noexcept;
+    const_reference back() const noexcept;
+    T* data() noexcept;
+    const T* data() const noexcept;
+
+    // modifiers
     void push_back(value_type item);
     void pop_back();
     void clear();
+
+    // capacity
+    bool empty() const noexcept;
+    size_type size() const noexcept;
+    void reserve(size_type capacity);
+    size_type capacity() const noexcept;
     void shrink_to_fit();
 
-    size_type size() const noexcept;
-    size_type capacity() const noexcept;
-    bool empty() const noexcept;
-
+    // iterators
     const_iterator begin() const noexcept;
     const_iterator end() const noexcept;
     const_iterator cbegin() const noexcept;
     const_iterator cend() const noexcept;
-
     iterator begin() noexcept;
     iterator end() noexcept;
-
-protected:
-    T* storage_;
-    size_type storage_size_;
 
 private:
     void adjustCapacity(size_type length);
 
+    T* storage_;
+    size_type storage_size_;
     size_type storage_capacity_;
 };
 
@@ -185,6 +197,62 @@ HeapStorage<T>& HeapStorage<T>::operator=(HeapStorage&& other) noexcept
     other.storage_capacity_ = 0;
 
     return *this;
+}
+
+template <typename T>
+typename HeapStorage<T>::reference HeapStorage<T>::operator[](size_type pos) noexcept
+{
+    assert(pos <= storage_size_);
+    return *(storage_ + pos);
+}
+
+template <typename T>
+typename HeapStorage<T>::const_reference HeapStorage<T>::operator[](size_type pos) const noexcept
+{
+    assert(pos <= storage_size_);
+    return *(storage_ + pos);
+}
+
+template <typename T>
+typename HeapStorage<T>::reference HeapStorage<T>::front() noexcept
+{
+    assert(storage_size_ > 0);
+    return *storage_;
+}
+
+template <typename T>
+typename HeapStorage<T>::const_reference HeapStorage<T>::front() const noexcept
+{
+    assert(storage_size_ > 0);
+    return *storage_;
+}
+
+template <typename T>
+typename HeapStorage<T>::reference HeapStorage<T>::back() noexcept
+{
+    assert(storage_size_ > 0);
+    return *(storage_ + storage_size_ - 1);
+}
+
+template <typename T>
+typename HeapStorage<T>::const_reference HeapStorage<T>::back() const noexcept
+{
+    assert(storage_size_ > 0);
+    return *(storage_ + storage_size_ - 1);
+}
+
+template <typename T>
+T* HeapStorage<T>::data() noexcept
+{
+    assert(storage_size_ > 0);
+    return storage_;
+}
+
+template <typename T>
+const T* HeapStorage<T>::data() const noexcept
+{
+    assert(storage_size_ > 0);
+    return storage_;
 }
 
 template <typename T>

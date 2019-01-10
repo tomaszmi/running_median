@@ -304,4 +304,26 @@ TEST(HeapStorage, supportedTypes)
     EXPECT_TRUE((isTypeSupported<const volatile int, int>()));
 }
 
+TEST(HeapStorage, accessors)
+{
+    constexpr std::size_t storageSize = 10;
+    HeapStorage<int> storage;
+    storage.reserve(storageSize);
+    for(int i = 0; i < static_cast<int>(storageSize); i++)
+    {
+        storage.push_back(i);
+    }
+
+    for(std::size_t i = 0; i < storageSize; i++)
+    {
+        EXPECT_EQ(i, storage[i]);
+    }
+    storage[0] = 123;
+    storage[9] = 321;
+    EXPECT_EQ(123, storage.front());
+    EXPECT_EQ(321, storage.back());
+
+    EXPECT_EQ(123, *storage.data());
+}
+
 } // anonymous namespace

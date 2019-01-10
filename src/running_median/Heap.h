@@ -16,6 +16,8 @@ public:
     using value_type = typename Storage::value_type;
     using pointer = typename Storage::pointer;
     using const_pointer = typename Storage::const_pointer;
+    using reference = typename Storage::reference;
+    using const_reference = typename Storage::const_reference;
     using iterator = typename Storage::iterator;
     using const_iterator = typename Storage::const_iterator;
     using size_type = typename Storage::size_type;
@@ -23,11 +25,6 @@ public:
 
     Heap() = default;
     explicit Heap(Compare cmp);
-
-    Heap(const Heap& other) = default;
-    Heap(Heap&& other) noexcept = default;
-    Heap& operator=(const Heap& other) = default;
-    Heap& operator=(Heap&& other) noexcept = default;
 
     void insert(T item);
     void pop();
@@ -41,10 +38,13 @@ public:
 
     using Storage::begin;
     using Storage::cbegin;
-    using Storage::cend;
     using Storage::end;
+    using Storage::cend;
 
 private:
+    void buildHeap() noexcept;
+    void heapify() noexcept;
+
     Compare cmp_;
 };
 
@@ -75,6 +75,18 @@ void Heap<T, Compare>::pop()
 template <typename T, typename Compare>
 T Heap<T, Compare>::top() const noexcept
 {
+}
+
+template <typename T, typename Compare>
+void Heap<T, Compare>::buildHeap() noexcept
+{
+        // TODO
+}
+
+template <typename T, typename Compare>
+void Heap<T, Compare>::heapify() noexcept
+{
+        // TODO
 }
 
 } // namespace tplx
