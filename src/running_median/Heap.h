@@ -33,6 +33,7 @@ public:
     void pop();
     T top() const noexcept;
 
+    using Storage::reserve;
     using Storage::clear;
 
     using Storage::empty;

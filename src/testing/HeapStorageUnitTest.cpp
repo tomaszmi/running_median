@@ -1,7 +1,3 @@
-/*
-    NOTE: test code uses STL.
-*/
-
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "HeapStorage.h"
