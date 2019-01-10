@@ -20,44 +20,33 @@ struct FalseType
     static constexpr bool value = false;
 };
 
-template <typename T>
-struct SupportedType : FalseType
+template <typename T, typename U>
+struct IsSame : FalseType
 {
 };
 
-// Fundamental types (https://en.cppreference.com/w/cpp/language/types)
-template <>
-struct SupportedType<short> : TrueType
+template <typename T>
+struct IsSame<T, T> : TrueType
 {
 };
-template <>
-struct SupportedType<unsigned short> : TrueType
+
+template <typename T>
+constexpr bool isTypeSupportedImpl()
 {
-};
-template <>
-struct SupportedType<int> : TrueType
+    return false;
+}
+
+template <typename T, typename Head, typename... Ts>
+constexpr bool isTypeSupportedImpl()
 {
-};
-template <>
-struct SupportedType<unsigned> : TrueType
+    return IsSame<T, Head>::value or isTypeSupportedImpl<T, Ts...>();
+}
+
+template <typename T, typename... Ts>
+constexpr bool isTypeSupported()
 {
-};
-template <>
-struct SupportedType<long> : TrueType
-{
-};
-template <>
-struct SupportedType<unsigned long> : TrueType
-{
-};
-template <>
-struct SupportedType<long long> : TrueType
-{
-};
-template <>
-struct SupportedType<unsigned long long> : TrueType
-{
-};
+    return isTypeSupportedImpl<T, Ts...>();
+}
 
 template <typename T>
 class HeapStorage
@@ -110,7 +99,10 @@ private:
 template <typename T>
 HeapStorage<T>::HeapStorage() noexcept : storage_{nullptr}, storage_size_{0}, storage_capacity_{0}
 {
-    static_assert(SupportedType<T>::value, "type is not supported by HeapStorage");
+    // Fundamental types (https://en.cppreference.com/w/cpp/language/types)
+    static_assert(
+        isTypeSupported<T, short, unsigned short, int, unsigned, long, unsigned long, long long, unsigned long long>(),
+        "Provided type T is not supported by HeapStorage");
 }
 
 template <typename T>
@@ -168,7 +160,7 @@ HeapStorage<T>& HeapStorage<T>::operator=(HeapStorage&& other) noexcept
 template <typename T>
 void HeapStorage<T>::reserve(size_type capacity)
 {
-    if(capacity > storage_capacity_)
+    if (capacity > storage_capacity_)
     {
         adjustCapacity(capacity);
         assert(storage_capacity_ == capacity);

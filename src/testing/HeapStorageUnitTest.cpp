@@ -293,4 +293,12 @@ TEST(HeapStorage, copy_assignment_non_empty_src_and_dst)
     EXPECT_EQ(2U, second.capacity());
 }
 
+TEST(HeapStorage, supportedTypes)
+{
+    EXPECT_FALSE(isTypeSupported<int>());
+    EXPECT_TRUE((isTypeSupported<int, int, char>()));
+    EXPECT_TRUE((isTypeSupported<int, char, int>()));
+    EXPECT_FALSE((isTypeSupported<short, int, long, double>()));
+}
+
 } // anonymous namespace
