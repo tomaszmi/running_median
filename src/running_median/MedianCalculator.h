@@ -2,6 +2,7 @@
 
 #include "Heap.h"
 #include <cmath>
+#include <cassert>
 
 namespace tplx
 {
@@ -68,7 +69,9 @@ void balance(MaxHeap<T>& lowerHalf, MinHeap<T>& upperHalf)
 {
     if (lowerHalf.size() > upperHalf.size())
     {
-        if (lowerHalf.size() - upperHalf.size() == 2)
+        const auto diff = lowerHalf.size() - upperHalf.size();
+        assert(diff <= 2);
+        if (diff == 2)
         {
             upperHalf.insert(lowerHalf.top());
             lowerHalf.pop();
@@ -76,7 +79,9 @@ void balance(MaxHeap<T>& lowerHalf, MinHeap<T>& upperHalf)
     }
     else if (upperHalf.size() > lowerHalf.size())
     {
-        if (upperHalf.size() - lowerHalf.size() == 2)
+        const auto diff = upperHalf.size() - lowerHalf.size();
+        assert(diff <= 2);
+        if (diff == 2)
         {
             lowerHalf.insert(upperHalf.top());
             upperHalf.pop();

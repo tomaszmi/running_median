@@ -12,6 +12,7 @@ if(ENABLE_SANITIZERS)
 endif()
 
 add_subdirectory(src/running_median)
+add_subdirectory(src/events)
 
 if(ENABLE_TESTS)
     enable_testing()
