@@ -166,4 +166,18 @@ TEST(MedianCalculator, running_median_for_fixed_values)
     EXPECT_THAT(c.calculate(), DoubleEq(4));
 }
 
+
+TEST(MedianCalculator, reset_restarts_calculation)
+{
+    MedianCalculator<int> c;
+    c.add(20);
+    c.add(10);
+    c.add(30);
+    EXPECT_THAT(c.calculate(), DoubleEq(20));
+    c.reset();
+    EXPECT_TRUE(std::isnan(c.calculate()));
+    c.add(100);
+    EXPECT_THAT(c.calculate(), DoubleEq(100));
+}
+
 } // anonymous namespace

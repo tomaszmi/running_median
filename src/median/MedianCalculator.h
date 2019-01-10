@@ -23,7 +23,13 @@ public:
 
         \return median value
      */
-    double calculate() const;
+    double calculate() const noexcept;
+
+    /**
+        \brief Reset internal state, so median will be calculated from scratch starting with the
+            nearest added new value.
+     */
+    void reset() noexcept;
 
 private:
     MaxHeap<T> lowerHalf_;
@@ -31,7 +37,7 @@ private:
 };
 
 template <typename T>
-double MedianCalculator<T>::calculate() const
+double MedianCalculator<T>::calculate() const noexcept
 {
     if (lowerHalf_.empty() and upperHalf_.empty())
     {
@@ -96,6 +102,13 @@ void MedianCalculator<T>::add(T value)
 {
     addValue(value, lowerHalf_, upperHalf_);
     balance(lowerHalf_, upperHalf_);
+}
+
+template <typename T>
+void MedianCalculator<T>::reset() noexcept
+{
+    lowerHalf_.clear();
+    upperHalf_.clear();
 }
 
 } // namespace tplx
