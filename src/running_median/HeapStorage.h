@@ -4,79 +4,12 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include "HeapStorageTypeTraits.h"
 
 namespace tplx
 {
 namespace details
 {
-
-struct TrueType
-{
-    static constexpr bool value = true;
-};
-
-struct FalseType
-{
-    static constexpr bool value = false;
-};
-
-template <typename T>
-struct RemoveConst
-{
-    using type = T;
-};
-
-template <typename T>
-struct RemoveConst<const T>
-{
-    using type = T;
-};
-
-template <typename T>
-struct RemoveVolatile
-{
-    using type = T;
-};
-
-template <typename T>
-struct RemoveVolatile<volatile T>
-{
-    using type = T;
-};
-
-template <typename T>
-struct RemoveCV
-{
-    using type = typename RemoveVolatile<typename RemoveConst<T>::type>::type;
-};
-
-template <typename T, typename U>
-struct IsSame : FalseType
-{
-};
-
-template <typename T>
-struct IsSame<T, T> : TrueType
-{
-};
-
-template <typename T>
-constexpr bool isTypeSupportedImpl()
-{
-    return false;
-}
-
-template <typename T, typename Head, typename... Ts>
-constexpr bool isTypeSupportedImpl()
-{
-    return IsSame<typename RemoveCV<T>::type, typename RemoveCV<Head>::type>::value or isTypeSupportedImpl<T, Ts...>();
-}
-
-template <typename T, typename... Ts>
-constexpr bool isTypeSupported()
-{
-    return isTypeSupportedImpl<T, Ts...>();
-}
 
 template <typename T>
 class HeapStorage
@@ -143,7 +76,7 @@ HeapStorage<T>::HeapStorage() noexcept : storage_{nullptr}, storage_size_{0}, st
 {
     // Fundamental types (https://en.cppreference.com/w/cpp/language/types)
     static_assert(
-        isTypeSupported<T, short, unsigned short, int, unsigned, long, unsigned long, long long, unsigned long long>(),
+        isTypeInTheList<T, short, unsigned short, int, unsigned, long, unsigned long, long long, unsigned long long>(),
         "Provided type T is not supported by HeapStorage");
 }
 

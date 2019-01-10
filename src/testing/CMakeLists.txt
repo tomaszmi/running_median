@@ -3,6 +3,7 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/third_party/googletest" "${PROJECT_BINAR
 add_executable(
     running_median_ut
     HeapStorageUnitTest
+    HeapStorageTypeTraitsUnitTest
     HeapUnitTest
 )
 

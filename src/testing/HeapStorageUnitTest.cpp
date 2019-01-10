@@ -293,17 +293,6 @@ TEST(HeapStorage, copy_assignment_non_empty_src_and_dst)
     EXPECT_EQ(2U, second.capacity());
 }
 
-TEST(HeapStorage, supportedTypes)
-{
-    EXPECT_FALSE(isTypeSupported<int>());
-    EXPECT_TRUE((isTypeSupported<int, int, char>()));
-    EXPECT_TRUE((isTypeSupported<int, char, int>()));
-    EXPECT_FALSE((isTypeSupported<short, int, long, double>()));
-    EXPECT_TRUE((isTypeSupported<volatile int, int>()));
-    EXPECT_TRUE((isTypeSupported<const int, int>()));
-    EXPECT_TRUE((isTypeSupported<const volatile int, int>()));
-}
-
 TEST(HeapStorage, accessors)
 {
     constexpr std::size_t storageSize = 10;
