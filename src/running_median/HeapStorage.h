@@ -159,9 +159,12 @@ HeapStorage<T>::~HeapStorage()
 template <typename T>
 HeapStorage<T>::HeapStorage(const HeapStorage& other) : storage_{nullptr}, storage_size_{0}, storage_capacity_{0}
 {
-    adjustCapacity(other.storage_size_);
-    std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
-    storage_size_ = other.storage_size_;
+    if(other.storage_size_ > 0)
+    {
+        adjustCapacity(other.storage_size_);
+        std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
+        storage_size_ = other.storage_size_;
+    }
 }
 
 template <typename T>
@@ -177,9 +180,12 @@ template <typename T>
 HeapStorage<T>& HeapStorage<T>::operator=(const HeapStorage& other)
 {
     adjustCapacity(0);
-    adjustCapacity(other.storage_size_);
-    std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
-    storage_size_ = other.storage_size_;
+    if(other.storage_size_ > 0)
+    {
+        adjustCapacity(other.storage_size_);
+        std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
+        storage_size_ = other.storage_size_;
+    }
 
     return *this;
 }
@@ -372,8 +378,11 @@ void HeapStorage<T>::adjustCapacity(std::size_t length)
     }
 
     value_type* new_storage = new value_type[length];
-    std::memcpy(new_storage, storage_, storage_size_ * sizeof(value_type));
-    delete[] storage_;
+    if(storage_)
+    {
+        std::memcpy(new_storage, storage_, storage_size_ * sizeof(value_type));
+        delete[] storage_;
+    }
     storage_ = new_storage;
     storage_capacity_ = length;
     if (length < storage_size_)
