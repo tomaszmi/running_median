@@ -27,13 +27,20 @@ public:
     using size_type = typename Storage::size_type;
     using difference_type = typename Storage::difference_type;
 
+    /**
+        \brief Constructs Heap structure using default-constructed comparator object.
+     */
     Heap() = default;
+    /**
+        \brief Constructs Heap structure using provided comparator object.
+        \param cmp - comparator.
+     */
     explicit Heap(Compare cmp);
 
     /**
         \brief Inserts new element to the heap.
         \throws std::bad_alloc if there is not enough memory available
-        \param item new element to be inserted
+        \param item - new element to be inserted
      */
     void insert(T item);
 

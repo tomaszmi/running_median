@@ -5,6 +5,7 @@ add_executable(
     HeapStorageUnitTest
     HeapStorageTypeTraitsUnitTest
     HeapUnitTest
+    MedianCalculatorUnitTest
 )
 
 target_link_libraries(running_median_ut
