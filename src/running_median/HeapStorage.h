@@ -1,10 +1,10 @@
 #pragma once
 
+#include "HeapStorageTypeTraits.h"
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include "HeapStorageTypeTraits.h"
 
 namespace tplx
 {
@@ -93,7 +93,7 @@ HeapStorage<T>::~HeapStorage()
 template <typename T>
 HeapStorage<T>::HeapStorage(const HeapStorage& other) : storage_{nullptr}, storage_size_{0}, storage_capacity_{0}
 {
-    if(other.storage_size_ > 0)
+    if (other.storage_size_ > 0)
     {
         adjustCapacity(other.storage_size_);
         std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
@@ -114,7 +114,7 @@ template <typename T>
 HeapStorage<T>& HeapStorage<T>::operator=(const HeapStorage& other)
 {
     adjustCapacity(0);
-    if(other.storage_size_ > 0)
+    if (other.storage_size_ > 0)
     {
         adjustCapacity(other.storage_size_);
         std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
@@ -320,7 +320,7 @@ void HeapStorage<T>::adjustCapacity(std::size_t length)
     }
 
     value_type* new_storage = new value_type[length];
-    if(storage_)
+    if (storage_)
     {
         std::memcpy(new_storage, storage_, storage_size_ * sizeof(value_type));
         delete[] storage_;

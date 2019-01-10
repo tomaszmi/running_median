@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include "HeapStorageTypeTraits.h"
+#include <gtest/gtest.h>
 
 namespace
 {

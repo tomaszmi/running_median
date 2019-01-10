@@ -8,7 +8,7 @@ namespace tplx
 
 /**
     \brief Implementation of the HEAP data structure
-        inspired by "Introduction To Algorithms" (Thomas H. Cormen et. all) 
+        inspired by "Introduction To Algorithms" (Thomas H. Cormen et. all)
  */
 template <typename T, typename Compare>
 class Heap : private details::HeapStorage<T>
@@ -48,29 +48,29 @@ public:
      */
     T top() const noexcept;
 
-    using Storage::reserve;
     using Storage::clear;
+    using Storage::reserve;
 
     using Storage::empty;
     using Storage::size;
 
     using Storage::begin;
     using Storage::cbegin;
-    using Storage::end;
     using Storage::cend;
+    using Storage::end;
 
 private:
     size_type parent(size_type index) const noexcept
     {
-        return (index-1)/2;
+        return (index - 1) / 2;
     }
     size_type left(size_type index) const noexcept
     {
-        return 2*index + 1;
+        return 2 * index + 1;
     }
     size_type right(size_type index) const noexcept
     {
-        return 2*index + 2;
+        return 2 * index + 2;
     }
 
     /// \brief Implements MAX-HEAPIFY/MIN-HEAPIFY procedure
@@ -97,8 +97,8 @@ template <typename T, typename Compare>
 void Heap<T, Compare>::insert(T item)
 {
     this->push_back(item);
-    auto i = this->size()-1;
-    while(i > 0 and cmp_(this->operator[](parent(i)), this->operator[](i)))
+    auto i = this->size() - 1;
+    while (i > 0 and cmp_(this->operator[](parent(i)), this->operator[](i)))
     {
         this->swap(i, parent(i));
         i = parent(i);
@@ -109,9 +109,9 @@ void Heap<T, Compare>::insert(T item)
 template <typename T, typename Compare>
 void Heap<T, Compare>::pop() noexcept
 {
-    this->swap(0, this->size()-1);
+    this->swap(0, this->size() - 1);
     this->pop_back();
-    if(not this->empty())
+    if (not this->empty())
     {
         heapify(0);
     }
@@ -128,20 +128,20 @@ T Heap<T, Compare>::top() const noexcept
 template <typename T, typename Compare>
 void Heap<T, Compare>::heapify(size_type index) noexcept
 {
-    while(true)
+    while (true)
     {
         auto l = left(index);
         auto r = right(index);
         auto selected = index;
-        if(l <= (this->size() - 1) and cmp_(this->operator[](selected), this->operator[](l)))
+        if (l <= (this->size() - 1) and cmp_(this->operator[](selected), this->operator[](l)))
         {
             selected = l;
         }
-        if(r <= (this->size() -1) and cmp_(this->operator[](selected), this->operator[](r)))
+        if (r <= (this->size() - 1) and cmp_(this->operator[](selected), this->operator[](r)))
         {
             selected = r;
         }
-        if(selected != index)
+        if (selected != index)
         {
             this->swap(selected, index);
             index = selected;

@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include "HeapStorage.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 namespace
 {
@@ -73,7 +73,7 @@ TEST(HeapStorage, reserve_reallocates_and_preserves_the_content)
     EXPECT_EQ(0U, storage.size());
     EXPECT_EQ(50U, storage.capacity());
 
-    for(int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++)
     {
         storage.push_back(i);
     }
@@ -118,7 +118,7 @@ TEST(HeapStorage, new_element_doubles_capacity_if_is_already_full)
     EXPECT_EQ(0U, storage.size());
     EXPECT_EQ(10U, storage.capacity());
 
-    for(int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         storage.push_back(i);
     }
@@ -134,7 +134,7 @@ TEST(HeapStorage, clear_changes_size_but_capacity)
 {
     HeapStorage<int> storage;
     storage.reserve(10);
-    for(int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         storage.push_back(i);
     }
@@ -149,7 +149,7 @@ TEST(HeapStorage, shrink_to_fit_does_nothing_if_size_is_already_equal_to_capacit
 {
     HeapStorage<int> storage;
     storage.reserve(10);
-    for(int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         storage.push_back(i);
     }
@@ -162,7 +162,7 @@ TEST(HeapStorage, shrink_to_fit_allocates_new_memory_with_size_equal_to_storage_
 {
     HeapStorage<int> storage;
     storage.reserve(10);
-    for(int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++)
     {
         storage.push_back(i);
     }
@@ -180,7 +180,7 @@ TEST(HeapStorage, shrink_to_fit_allocates_new_memory_with_size_equal_to_storage_
 }
 
 /// \brief The following helper function guarantees calling move ctor
-template<typename T>
+template <typename T>
 HeapStorage<T> moveAround(HeapStorage<T>&& src)
 {
     return std::move(src);
@@ -236,7 +236,7 @@ TEST(HeapStorage, move_assignment_non_empty_src_and_dst)
 }
 
 /// \brief The following helper function guarantees calling copy ctor
-template<typename T>
+template <typename T>
 HeapStorage<T> returnCopy(HeapStorage<T>&& src)
 {
     HeapStorage<T> copy1 = src;
@@ -266,7 +266,7 @@ TEST(HeapStorage, copy_ctor_non_empty_src)
     auto dst = returnCopy(std::move(src));
     EXPECT_NE(srcBegin, dst.begin());
     EXPECT_EQ(3U, dst.size());
-    EXPECT_EQ(3U, dst.capacity());  // capacity is not copied
+    EXPECT_EQ(3U, dst.capacity()); // capacity is not copied
     EXPECT_THAT(dst, ElementsAreArray(std::initializer_list<int>{1, 2, 3}));
 }
 
@@ -298,12 +298,12 @@ TEST(HeapStorage, accessors)
     constexpr std::size_t storageSize = 10;
     HeapStorage<int> storage;
     storage.reserve(storageSize);
-    for(int i = 0; i < static_cast<int>(storageSize); i++)
+    for (int i = 0; i < static_cast<int>(storageSize); i++)
     {
         storage.push_back(i);
     }
 
-    for(std::size_t i = 0; i < storageSize; i++)
+    for (std::size_t i = 0; i < storageSize; i++)
     {
         EXPECT_EQ(i, storage[i]);
     }
@@ -319,7 +319,7 @@ TEST(HeapStorage, swap)
 {
     constexpr std::size_t storageSize = 10;
     HeapStorage<int> storage;
-    for(int i = 0; i < static_cast<int>(storageSize); i++)
+    for (int i = 0; i < static_cast<int>(storageSize); i++)
     {
         storage.push_back(i);
     }

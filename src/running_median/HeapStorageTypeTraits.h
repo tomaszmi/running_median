@@ -79,4 +79,5 @@ constexpr bool isTypeInTheList()
     return findTypeImpl<T, Ts...>();
 }
 
-}} // namespace tplx::details
+} // namespace details
+} // namespace tplx
