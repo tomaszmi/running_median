@@ -79,6 +79,7 @@ public:
     HeapStorage& operator=(const HeapStorage& other);
     HeapStorage& operator=(HeapStorage&& other) noexcept;
 
+    void reserve(size_type capacity);
     void push_back(value_type item);
     void pop_back();
     void clear();
@@ -96,11 +97,13 @@ public:
     iterator begin() noexcept;
     iterator end() noexcept;
 
+protected:
+    T* storage_;
+    size_type storage_size_;
+
 private:
     void adjustCapacity(size_type length);
 
-    T* storage_;
-    size_type storage_size_;
     size_type storage_capacity_;
 };
 
@@ -160,6 +163,16 @@ HeapStorage<T>& HeapStorage<T>::operator=(HeapStorage&& other) noexcept
     other.storage_capacity_ = 0;
 
     return *this;
+}
+
+template <typename T>
+void HeapStorage<T>::reserve(size_type capacity)
+{
+    if(capacity > storage_capacity_)
+    {
+        adjustCapacity(capacity);
+        assert(storage_capacity_ == capacity);
+    }
 }
 
 template <typename T>
