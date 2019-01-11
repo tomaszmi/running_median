@@ -26,5 +26,5 @@ if(ENABLE_TESTS)
 endif()
 
 if(ENABLE_BENCHMARK)
-    add_subdirectory(benchmark)
+    add_subdirectory(performance)
 endif()

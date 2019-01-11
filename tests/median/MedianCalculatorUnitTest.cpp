@@ -166,7 +166,6 @@ TEST(MedianCalculator, running_median_for_fixed_values)
     EXPECT_THAT(c.calculate(), DoubleEq(4));
 }
 
-
 TEST(MedianCalculator, reset_restarts_calculation)
 {
     MedianCalculator<int> c;

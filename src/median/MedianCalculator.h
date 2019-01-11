@@ -31,6 +31,8 @@ public:
      */
     void reset() noexcept;
 
+    void reserve(std::size_t capacity);
+
 private:
     MaxHeap<T> lowerHalf_;
     MinHeap<T> upperHalf_;
@@ -109,6 +111,13 @@ void MedianCalculator<T>::reset() noexcept
 {
     lowerHalf_.clear();
     upperHalf_.clear();
+}
+
+template<typename T>
+void MedianCalculator<T>::reserve(std::size_t capacity)
+{
+    lowerHalf_.reserve(capacity);
+    upperHalf_.reserve(capacity);
 }
 
 } // namespace tplx

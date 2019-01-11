@@ -12,23 +12,43 @@ namespace
 using namespace ::tplx;
 using namespace ::testing;
 
-TEST(MedianCalculator, test_calculateReferenceMedianValue)
+TEST(MedianCalculator, test_calculateReferenceMedianValue_sort_based)
 {
     {
         std::vector<int> v;
-        EXPECT_TRUE(std::isnan(calculateReferenceMedianValue(v)));
+        EXPECT_TRUE(std::isnan(calculateReferenceMedianValue_sort_based(v)));
         v.push_back(3);
-        EXPECT_THAT(calculateReferenceMedianValue(v), DoubleEq(3));
+        EXPECT_THAT(calculateReferenceMedianValue_sort_based(v), DoubleEq(3));
         v.push_back(7);
-        EXPECT_THAT(calculateReferenceMedianValue(v), DoubleEq(5));
+        EXPECT_THAT(calculateReferenceMedianValue_sort_based(v), DoubleEq(5));
         v.push_back(10);
-        EXPECT_THAT(calculateReferenceMedianValue(v), DoubleEq(7));
+        EXPECT_THAT(calculateReferenceMedianValue_sort_based(v), DoubleEq(7));
         v.push_back(11);
-        EXPECT_THAT(calculateReferenceMedianValue(v), DoubleEq((7. + 10) / 2));
+        EXPECT_THAT(calculateReferenceMedianValue_sort_based(v), DoubleEq((7. + 10) / 2));
     }
     {
         std::vector<int> v{-337, 4110, 6922, 7963, 7978, 6568};
-        EXPECT_THAT(calculateReferenceMedianValue(v), DoubleEq(6745.0));
+        EXPECT_THAT(calculateReferenceMedianValue_sort_based(v), DoubleEq(6745.0));
+    }
+}
+
+TEST(MedianCalculator, test_calculateReferenceMedianValue_nth_element_based)
+{
+    {
+        std::vector<int> v;
+        EXPECT_TRUE(std::isnan(calculateReferenceMedianValue_nth_element_based(v)));
+        v.push_back(3);
+        EXPECT_THAT(calculateReferenceMedianValue_nth_element_based(v), DoubleEq(3));
+        v.push_back(7);
+        EXPECT_THAT(calculateReferenceMedianValue_nth_element_based(v), DoubleEq(5));
+        v.push_back(10);
+        EXPECT_THAT(calculateReferenceMedianValue_nth_element_based(v), DoubleEq(7));
+        v.push_back(11);
+        EXPECT_THAT(calculateReferenceMedianValue_nth_element_based(v), DoubleEq((7. + 10) / 2));
+    }
+    {
+        std::vector<int> v{-337, 4110, 6922, 7963, 7978, 6568};
+        EXPECT_THAT(calculateReferenceMedianValue_nth_element_based(v), DoubleEq(6745.0));
     }
 }
 
@@ -46,7 +66,7 @@ TEST(MedianCalculatorRegression, running_median_for_randomly_generated_numbers)
         const auto randomizedValue = distribution(generator);
         c.add(randomizedValue);
         collected.push_back(randomizedValue);
-        const auto reference = calculateReferenceMedianValue(collected);
+        const auto reference = calculateReferenceMedianValue_sort_based(collected);
         EXPECT_THAT(c.calculate(), DoubleEq(reference));
     }
 }
