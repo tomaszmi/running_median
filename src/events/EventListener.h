@@ -6,6 +6,10 @@ namespace tplx
 template<typename T>
 struct Event;
 
+/**
+    \brief Abstracts receiver of the produced by event loop events.
+        Listener receives each newly produced event.
+ */
 template<typename T>
 class EventListener
 {

@@ -6,8 +6,8 @@ namespace tplx
 enum class EventType
 {
     new_value,
-    calc_median,
-    end_of_seq
+    calculate_median,
+    sequence_end
 };
 
 template<typename T>
