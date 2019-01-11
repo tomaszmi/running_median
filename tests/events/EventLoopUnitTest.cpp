@@ -82,7 +82,7 @@ TEST(EventLoop, valid_input)
     runEventLoop(input, listener);
 }
 
-class EventLoopTest : public TestWithParam<const char*>
+struct EventLoopTest : TestWithParam<const char*>
 {
 };
 
@@ -94,7 +94,10 @@ TEST_P(EventLoopTest, invalid_input)
     EXPECT_THROW(runEventLoop(input, listener), std::invalid_argument) << GetParam();
 }
 
+const char* invalid_inputs[] = {" ", "1m", "o", "mm", "1  ", " 2"};
+
 } // anonymous namespace
 
-INSTANTIATE_TEST_SUITE_P(EventLoopTestParametrized, EventLoopTest,
-                         ::testing::Values(" ", "1m", "o", "mm", "1  ", " 2"));
+INSTANTIATE_TEST_CASE_P(EventLoopTestParametrized,
+                        EventLoopTest,
+                        ValuesIn(invalid_inputs),);
