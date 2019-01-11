@@ -8,6 +8,13 @@ TODO
 
 ## Building
 
+Requirements:
+
+ * OS: recommended is Linux (but there is a chance that it works on IOS as well)
+ * C++ compiler supporting C++11 (tested with gcc 8.2.0 and clang 7.0.0)
+ * Ninja-build or GNU Makefile
+ * git
+
 ```
 $ cd ~/
 $ git clone --recurse-submodules https://github.com/tomaszmi/running_median.git
