@@ -15,6 +15,7 @@ include_directories(src)
 
 add_subdirectory(src/median)
 add_subdirectory(src/events)
+add_subdirectory(src/app)
 
 if(ENABLE_TESTS)
     enable_testing()

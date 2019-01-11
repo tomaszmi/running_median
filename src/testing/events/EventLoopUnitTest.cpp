@@ -90,9 +90,11 @@ TEST_P(EventLoopTest, invalid_input)
 {
     std::istringstream input{GetParam()};
     NiceMock<MockEventListener<int>> listener;
+    EXPECT_CALL(listener, newEvent(_)).WillRepeatedly(Return(true));
     EXPECT_THROW(runEventLoop(input, listener), std::invalid_argument) << GetParam();
 }
 
 } // anonymous namespace
 
-INSTANTIATE_TEST_SUITE_P(EventLoopTestParametrized, EventLoopTest, ::testing::Values(" ", "1m", "o", "mm", "1  "));
+INSTANTIATE_TEST_SUITE_P(EventLoopTestParametrized, EventLoopTest,
+                         ::testing::Values(" ", "1m", "o", "mm", "1  ", " 2"));

@@ -51,12 +51,15 @@ void runEventLoop(std::istream& source, EventListener<T>& listener)
         next = source.peek();
         if(source.good())
         {
-            if(separatorExpected and next != separator_marker)
+            if(next == '\n' or next == '\r')
+            {
+                break;
+            }
+            else if(separatorExpected and next != separator_marker)
             {
                 throw std::invalid_argument("missing separator");
             }
-
-            if(next == calc_median_marker)
+            else if(next == calc_median_marker)
             {
                 consumeNextAsMarker(source);
                 separatorExpected = true;
@@ -83,10 +86,6 @@ void runEventLoop(std::istream& source, EventListener<T>& listener)
                 consumeNextAsMarker(source);
                 separatorExpected = false;
             }
-            else if(next == '\n' or next == '\r')
-            {
-                break;
-            }
             else
             {
                 throw std::invalid_argument("unexpected character");
@@ -94,7 +93,10 @@ void runEventLoop(std::istream& source, EventListener<T>& listener)
 
             if(separatorExpected)
             {
-                listener.newEvent(Event<T>{type, newValue});
+                if(not listener.newEvent(Event<T>{type, newValue}))
+                {
+                    break;
+                }
                 newValue = {};
             }
         }
