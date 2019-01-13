@@ -2,7 +2,21 @@
 
 ## Problem
 
-TODO
+Calculate the median of unsorted integers being received from a stream of unknown upfront length. The task should rely on designing and implementing an efficient algorithm finding at any time the median of already received integers.
+
+### Input
+
+The stream sequence may contain any of the following items:
+
+ * an arbitrary number of integers denoting subsequently added elements to the set
+ * letter 'm' denoting a request to calculate and return the median of elements currently available in the set
+ * letter 'c' denoting an end of the steam
+ 
+The first element is always a number and the last is always the letter 'q'.
+
+### Output
+
+A sequence of floating point numbers separated by a single space, where each number represents a response for the calculate median request (letter 'm').
 
 # Running Median Application (solution)
 
