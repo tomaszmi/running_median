@@ -1,6 +1,6 @@
 # Running Median
 
-## Problem
+## Problem Statement
 
 Calculate the median of unsorted integers being received from a stream of unknown upfront length. The task should rely on designing and implementing an efficient algorithm finding at any time the median of already received integers.
 
@@ -18,7 +18,15 @@ The first element is always a number and the last is always the letter 'q'.
 
 A sequence of floating point numbers separated by a single space, where each number represents a response for the calculate median request (letter 'm').
 
-# Running Median Application (solution)
+### Example
+
+| Input           | Output  |
+|-----------------|---------|
+| 3 5 m 8 m 6 m q | 4 5 5.5 |
+
+# Solution
+
+The code of application solving the problem statement is available in the src/app directory.
 
 ## Building
 
