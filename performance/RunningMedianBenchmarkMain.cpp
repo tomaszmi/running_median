@@ -30,7 +30,7 @@ template<typename T>
 tplx::MedianCalculator<T> prepareMedianCalculator(const std::vector<T>& numbers)
 {
     tplx::MedianCalculator<T> c;
-    c.reserve(numbers.size());
+    c.reserve(numbers.size() + 2);
     for(auto number : numbers)
     {
         c.add(number);
@@ -52,7 +52,9 @@ void BM_MedianCalc_heap(benchmark::State& state, Args ... args)
 template<typename T>
 std::vector<T> prepareRefCalcInput(const std::vector<T>& numbers)
 {
-    return numbers;
+    auto copied = numbers;
+    copied.reserve(copied.size()+1);
+    return copied;
 }
 
 template<typename ... Args>
@@ -64,7 +66,7 @@ void BM_MedianCalc_sort(benchmark::State& state, Args ... args)
         auto numbers = prepareRefCalcInput(args...);
         state.ResumeTiming();
         numbers.push_back(10);
-        tplx::calculateReferenceMedianValue_sort_based(numbers);
+        benchmark::DoNotOptimize(tplx::calculateReferenceMedianValue_sort_based(numbers));
     }
 }
 
@@ -77,7 +79,7 @@ void BM_MedianCalc_nth_element(benchmark::State& state, Args ... args)
         auto numbers = prepareRefCalcInput(args...);
         state.ResumeTiming();
         numbers.push_back(10);
-        tplx::calculateReferenceMedianValue_nth_element_based(numbers);
+        benchmark::DoNotOptimize(tplx::calculateReferenceMedianValue_nth_element_based(numbers));
     }
 }
 

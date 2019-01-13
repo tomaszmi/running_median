@@ -1,7 +1,7 @@
 add_subdirectory("${PROJECT_SOURCE_DIR}/third_party/googletest" "${PROJECT_BINARY_DIR}/third_party/googletest")
 
 add_executable(
-    running_median_ut
+    running_median_tests
     median/HeapStorageUnitTest
     median/HeapStorageTypeTraitsUnitTest
     median/HeapUnitTest
@@ -10,7 +10,7 @@ add_executable(
     events/EventLoopUnitTest
 )
 
-target_link_libraries(running_median_ut
+target_link_libraries(running_median_tests
     median
     events
     gtest_main
@@ -18,6 +18,6 @@ target_link_libraries(running_median_ut
 )
 
 add_test(
-    NAME running_median_ut
-    COMMAND running_median_ut
+    NAME running_median_tests
+    COMMAND running_median_tests
 )

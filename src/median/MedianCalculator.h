@@ -116,8 +116,8 @@ void MedianCalculator<T>::reset() noexcept
 template<typename T>
 void MedianCalculator<T>::reserve(std::size_t capacity)
 {
-    lowerHalf_.reserve(capacity);
-    upperHalf_.reserve(capacity);
+    lowerHalf_.reserve(capacity/2);
+    upperHalf_.reserve(capacity/2);
 }
 
 } // namespace tplx
