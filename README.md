@@ -61,11 +61,11 @@ The above command builds all available targets, in particular:
 ### Additional Options
 
 The following [cmake options](https://cmake.org/cmake/help/latest/command/option.html) are available:
- * ENABLE_SANITIZERS (default: OFF)
+ * ENABLE_SANITIZERS (default: OFF)  
    Enables/disables [address sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) and [undefined behavior](https://en.wikipedia.org/wiki/Undefined_behavior) sanitizer
- * ENABLE_TESTS (default: ON)
+ * ENABLE_TESTS (default: ON)  
    Enables/disables building all available tests.
- * ENABLE_BENCHMARK (default: ON)
+ * ENABLE_BENCHMARK (default: ON)  
    Enables/disables building benchmarking application
 
 ## Usage
@@ -85,9 +85,16 @@ $
 
 TODO (how the problem has been solved, rationale, etc...)
 
-# Receipt
+## Receipt
 
-# Complexity
+Algorithm maintains two balanced buckets of numbers:
+ * lower half - keeping numbers less than or equal to the current median value
+ * upper half - keeping numbers greater than or equal to the current median value
+
+Algorithm has access to the **top** elements from both halfs. The top element from the lower half has the biggest value from all values sitting in that bucket. The top element from the upper half has the lowest value from all values sitting there.    
+When a new number comes in the algorithm determines whether it should be put to the lower half or the uper half by comparing it with both tops. If the number is less than lower half's top it goes to the lower half bucket, otherwise goes to the upper half bucket. The buckets may differ in size by up to two elements. If they differ by exactly two elements they are balanced. The balancing is performed right after inserting the new value and relies on moving the top element from the bigger bucket to the smaller bucket. After balancing bucket are equal in size. 
+
+## Complexity
 
 # Code Structure
 
