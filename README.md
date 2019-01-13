@@ -30,18 +30,21 @@ The implementation must be written in C/C++ and in case of C++ is allowed to use
 
 # Solution
 
-The code of application solving the problem statement is available in the src/app directory.
+The code of application solving the problem statement is available [here](https://github.com/tomaszmi/running_median/tree/master/src/app "src/app"). The application processes sequence from the standard input stream and writes output to the standard output stream. Any error is logged to the standard error stream.
 
 ## Building
 
-Requirements:
+### Requirements:
 
- * OS: recommended is Linux (but there is a chance that it works on IOS as well)
- * C++ compiler supporting C++11 (tested with gcc 8.2.0 and clang 7.0.0)
- * Ninja-build or GNU Makefile
- * git
+ * OS: recommended is Linux (tested on [Ubuntu](https://www.ubuntu.com/) 18.10), but there is a chance that it works on IOS and Windows as well
+ * C++ compiler supporting C++11 (tested with [gcc](https://gcc.gnu.org/) 8.2.0 and [clang](http://clang.llvm.org/) 7.0.0)
+ * [cmake](https://cmake.org/)
+ * [Ninja-build](https://ninja-build.org/) or [GNU Makefile](https://www.gnu.org/software/make/manual/make.html)
+ * [git](https://git-scm.com/)
 
-```
+### Building steps:
+
+```console
 $ cd ~/
 $ git clone --recurse-submodules https://github.com/tomaszmi/running_median.git
 $ mkdir ~/build
@@ -50,10 +53,26 @@ $ cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ~/running_median
 $ ninja
 ```
 
+The above command builds all available targets, in particular:
+ * main application (target **running_median**)
+ * all available tests (target **ninja running_median_tests**)
+ * benchmarking application (target **ninja running_median_benchmark**)
+
+### Additional Options
+
+The following [cmake options](https://cmake.org/cmake/help/latest/command/option.html) are available:
+ * ENABLE_SANITIZERS (default: OFF)
+   Enables/disables [address sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) and [undefined behavior](https://en.wikipedia.org/wiki/Undefined_behavior) sanitizer
+ * ENABLE_TESTS (default: ON)
+   Enables/disables building all available tests.
+ * ENABLE_BENCHMARK (default: ON)
+   Enables/disables building benchmarking application
+
 ## Usage
 
-Passing a sequence from file:
-```
+The following example usage processes sequence defined in a file by redirecting it to standard input:
+
+```console
 $ cd ~/build
 $ cat src/app/example_input.txt
 3 5 m 8 m 6 m q
@@ -62,9 +81,13 @@ $ ./src/app/running_median < src/app/example_input.txt
 $
 ```
 
-# Algorithm (solution description)
+# Algorithm
 
 TODO (how the problem has been solved, rationale, etc...)
+
+# Receipt
+
+# Complexity
 
 # Code Structure
 
