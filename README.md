@@ -24,6 +24,10 @@ A sequence of floating point numbers separated by a single space, where each num
 |-----------------|---------|
 | 3 5 m 8 m 6 m q | 4 5 5.5 |
 
+### Additional Notes
+
+The implementation must be written in C/C++ and in case of C++ is allowed to use only C++ Standard I/O Library. In particular must not use Standard Library algorithms and data structures. The algorithm must be optimized in terms of time. Its complexity should be estimated and justified. The code should be clean, well structured and tested using any testing framework. 
+
 # Solution
 
 The code of application solving the problem statement is available in the src/app directory.
