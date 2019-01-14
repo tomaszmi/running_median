@@ -26,7 +26,7 @@ A sequence of floating point numbers separated by a single space, where each num
 
 ### Additional Notes
 
-The implementation must be written in C/C++ and in case of C++ is allowed to use only C++ Standard I/O Library. In particular must not use Standard Library algorithms and data structures. The algorithm must be optimized in terms of time. Its complexity should be estimated and justified. The code should be clean, well structured and tested using any testing framework. 
+The implementation must be written in C/C++ and in case of C++ is allowed to use only C++ Standard I/O Library. In particular must not use Standard Library algorithms and data structures. The designed algorithm must be optimized in terms of time. Its complexity should be estimated and justified. The code should be clean, well structured and tested using any testing framework. 
 
 # Solution
 
@@ -36,7 +36,7 @@ The code of application solving the problem statement is available [here](https:
 
 ### Requirements:
 
- * OS: recommended is Linux (tested on [Ubuntu](https://www.ubuntu.com/) 18.10), but there is a chance that it works on IOS and Windows as well
+ * OS: Linux recommended (tested on [Ubuntu](https://www.ubuntu.com/) 18.10), but there is a chance that it works on IOS and Windows as well
  * C++ compiler supporting C++11 (tested with [gcc](https://gcc.gnu.org/) 8.2.0 and [clang](http://clang.llvm.org/) 7.0.0)
  * [cmake](https://cmake.org/)
  * [Ninja-build](https://ninja-build.org/) or [GNU Makefile](https://www.gnu.org/software/make/manual/make.html)
@@ -58,6 +58,14 @@ The above command builds all available targets, in particular:
  * all available tests (target **ninja running_median_tests**)
  * benchmarking application (target **ninja running_median_benchmark**)
 
+In order to use clang compiler it is necessary to set CC and CXX environment variables to accordingly clang and clang++.
+On linux cmake uses GNU Makefile as the default generator if -G option is not provided:
+
+```console
+$ CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release ~/running_median
+$ make -j $(nproc)
+```
+
 ### Additional Options
 
 The following [cmake options](https://cmake.org/cmake/help/latest/command/option.html) are available:
@@ -70,7 +78,7 @@ The following [cmake options](https://cmake.org/cmake/help/latest/command/option
 
 ## Usage
 
-The following example usage processes sequence defined in a file by redirecting it to standard input:
+The following example usage processes sequence defined in a file by redirecting it to the standard input stream:
 
 ```console
 $ cd ~/build
@@ -89,8 +97,8 @@ Algorithm maintains two balanced buckets of numbers:
  * lower half - keeping numbers less than or equal to the current median value
  * upper half - keeping numbers greater than or equal to the current median value
 
-Algorithm has access to the **top** elements from both halfs. The top element from the lower half has the biggest value from all values sitting in that bucket. The top element from the upper half has the lowest value from all values sitting there.    
-When a new number comes in the algorithm determines whether it should be put to the lower half or the uper half by comparing it with both tops. If the number is less than lower half's top it goes to the lower half bucket, otherwise goes to the upper half bucket. The buckets may differ in size by up to two elements. If they differ by exactly two elements they are balanced. The balancing is performed right after inserting the new value and relies on moving the top element from the bigger bucket to the smaller bucket. After balancing bucket are equal in size.
+Calculator has access to the **top** elements from both halfs. The top element from the lower half has the biggest value from all values located in that bucket. The top element from the upper half has the lowest value from all values placed there.    
+When a new number comes in the algorithm determines whether it should be placed to the lower half or the uper half by comparing it with both tops. If the number is less than lower half's top it goes to the lower half bucket, otherwise goes to the upper half bucket. The buckets may differ in size by up to two elements. If they differ by exactly two elements they are balanced. The balancing is performed right after inserting the new value and relies on moving the top element from the bigger bucket to the smaller bucket. After balancing bucket are equal in size.
 
 Calculating median:
 If the bucket sizes differ (by one) the median is equal to the top value of the bigger bucket, otherwise (sizes are equal) the median is equal to the arithmetic mean of two tops. If buckets are empty the median is **NAN** (https://en.wikipedia.org/wiki/NaN). Puting the same into a pseudo code:
@@ -107,15 +115,15 @@ calculate_median(lower, upper):
 
 ```
 
-Important observations:
+In order to make the above algorithm efficient the following condition must be met:
  * access to the top element must be fast
  * inserting and deleting top element must be fast and efficient
- * elements in the buckets do not need to be sorted
+
+[Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) and in particular [Binary Heap](https://en.wikipedia.org/wiki/Binary_heap) has important properties which make that structure a good candidate to use as the buckets.
 
 ## Implementation
 
-The buckets are implemented with [Binary Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) data structure. The lower and upper buckets are respectively Max Heap and Min Heap.
-The implementation has been done according to the book "Introduction to Algorithms" by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein.
+The lower and upper buckets are respectively Max Heap and Min Heap. The Heap has been implemented according to the book "Introduction to Algorithms" by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein (ISBN-10  9780262033848).
 
 ## Time Complexity
 
@@ -146,9 +154,9 @@ The [median](https://github.com/tomaszmi/running_median/tree/master/src/median) 
 
 The [events](https://github.com/tomaszmi/running_median/tree/master/src/events) directory contains an implementation of the event loop function reading input sequence and generating a set of corresponding events received by the provided listener, in particular:
  * [Event](https://github.com/tomaszmi/running_median/blob/master/src/events/Event.h) represents either:
-  ** new value being received
-  ** request to calculate median
-  ** sequence end
+   - new value being received
+   - request to calculate median
+   - sequence end
  * [EventListener](https://github.com/tomaszmi/running_median/blob/master/src/events/EventListener.h) abstracts and represents receiver of the generated Event objects
  * [EventLoop](https://github.com/tomaszmi/running_median/blob/master/src/events/EventLoop.h) input sequence reader building a set of Event objects and notifying EventListener about each of them. 
 
