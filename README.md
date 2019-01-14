@@ -132,7 +132,6 @@ Summarizing:
 |              | Get top | Delete top |   Insert   | Calc median |
 |--------------|---------|------------|------------|-------------|
 | average case |   O(1)  |  O(log n)  |    O(1)    |     O(1)    |
-|--------------|---------|------------|------------|-------------|
 | worst case   |   O(1)  |  O(log n)  |  O(log n)  |     O(1)    |
 
 
