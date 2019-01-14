@@ -119,16 +119,22 @@ The implementation has been done according to the book "Introduction to Algorith
 
 ## Time Complexity
 
+The most crucial heap operations are: 
  * Getting the top element:   
-   O(1) operation - it relies on reading the first element from the underlying contiguous memory
- * Inserting a new top element:   
-   O(log n) operation - it relies on inserting the element at the end of the underlying contiguous memory and traversing the Binary Tree bottom-up exactly "log n" times. At each step there is a single comparison and swap of two elements provided.
+   Relies on reading the first element from the underlying array so is as fast as it could be
+ * Inserting a new element:   
+   Relies on inserting the new element at the end of the underlying array and traversing the Binary Tree bottom-up up to the "log n" times. At each step there is a single comparison and swap of two elements performed.
  * Deleting top element:   
-   O(log n) operation - it relies on swapping first and last element in the underlying contiguous memory, deleting the last element and traversing the Binary Tree top down up to "log n" times. At each step there are three comparisons and a single swap of two elements performed.
+   Relies on swapping first and last element in the underlying array, deleting the last element and then traversing the Binary Tree top-down (AKA. heapify operation) "log n" times. At each step there are three comparisons and a single swap of two elements performed.
 
 Summarizing:
- * Inserting a new element to the set has ***O(log n)*** complexity.
- * Calculating median value has ***O(1)*** complexity.
+
+|              | Get top | Delete top |   Insert   | Calc median |
+|--------------|---------|------------|------------|-------------|
+| average case |   O(1)  |  O(log n)  |    O(1)    |     O(1)    |
+|--------------|---------|------------|------------|-------------|
+| worst case   |   O(1)  |  O(log n)  |  O(log n)  |     O(1)    |
+
 
 # Code Structure 
 
