@@ -142,7 +142,7 @@ Summarizing:
 | average case |   O(1)  |  O(log n)  |    O(1)    |     O(1)    |
 | worst case   |   O(1)  |  O(log n)  |  O(log n)  |     O(1)    |
 
-Average case for insertion explained:
+Average case for insertion explained:   
 The elements distribution in a heap of n-elements (of height h=log2 n) is as follows:
  * n/2 elements on h level
  * n/4 elements on h-1 level
@@ -177,6 +177,10 @@ The [app](https://github.com/tomaszmi/running_median/tree/master/src/app) direct
 The [tests](https://github.com/tomaszmi/running_median/tree/master/tests) directory contains unit tests covering functionality of median and events.
 
 The [performance](https://github.com/tomaszmi/running_median/tree/master/performance) directory contains benchmarking code, comparing various implementation of median calculators. 
+
+The [third_party](https://github.com/tomaszmi/running_median/tree/master/third_party) directory contains 3rd party software in particular:
+ * [benchmark](https://github.com/google/benchmark/tree/e776aa0275e293707b6a0901e0e8d8a8a3679508) library by Google used for benchmarking various implementations of median calculators
+ * [googletest](https://github.com/google/googletest/tree/2fe3bd994b3189899d93f1d5a881e725e046fdc2) library used in order to write test code (unit tests).
 
 # Running Tests
 
@@ -328,7 +332,7 @@ Running main() from /home/tmikolajczyk/running_median/third_party/googletest/goo
 Total Test time (real) =   0.01 sec
 ```
 
-# Running Benchmark Tests
+# Running Benchmark Application
 
 Benchmarking application checks and compares a few implementations of median calculators (heap-based, std::sort-based and std::nth_element based) measuring time needed to insert a single integer value to the set of respectively 10, 100, 1000, 10000 and 100000 elements.
 
