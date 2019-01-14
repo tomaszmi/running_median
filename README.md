@@ -157,6 +157,7 @@ The [performance](https://github.com/tomaszmi/running_median/tree/master/perform
 # Running Tests
 
 ```
+$ cd ~/build/
 $ ctest -V
 UpdateCTestConfiguration  from :/home/tmikolajczyk/build/DartConfiguration.tcl
 UpdateCTestConfiguration  from :/home/tmikolajczyk/build/DartConfiguration.tcl
@@ -305,7 +306,10 @@ Total Test time (real) =   0.01 sec
 
 # Running Benchmark Tests
 
+Benchmarking application checks and compares a few implementations of median calculators (heap-based, std::sort-based and std::nth_element based) measuring time needed to insert a single integer value to the set of respectively 10, 100, 1000, 10000 and 100000 elements.
+
 ```
+$ cd ~/build/
 $ ./performance/running_median_benchmark 
 2019-01-11 13:04:26
 Running ./performance/running_median_benchmark
