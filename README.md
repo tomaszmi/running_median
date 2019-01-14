@@ -142,6 +142,17 @@ Summarizing:
 | average case |   O(1)  |  O(log n)  |    O(1)    |     O(1)    |
 | worst case   |   O(1)  |  O(log n)  |  O(log n)  |     O(1)    |
 
+Average case for insertion explained:
+The elements distribution in a heap of n-elements (of height h=log2 n) is as follows:
+ * n/2 elements on h level
+ * n/4 elements on h-1 level
+ * n/8 elements on h-2 level
+ * ...
+ * 1 element on 0 level
+
+On average a new value has the probablity 1/2 of being at level h, 1/4 of being at level h-1, 1/8 of being at level h-2. At each level there is one comparison and up to one swap performed, which gives:
+
+avg time = 1/2 * 1 + 1/4*2 + 1/8 * 3 + 1/16 * 4 + ... = sum from k=0 to h of ( 1 / 2pow(k) * (k+1) ) = 2 (converges to 2)
 
 # Code Structure 
 
