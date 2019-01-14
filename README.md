@@ -172,7 +172,7 @@ The [events](https://github.com/tomaszmi/running_median/tree/master/src/events) 
  * [EventLoop](https://github.com/tomaszmi/running_median/blob/master/src/events/EventLoop.h) input sequence reader building a set of Event objects and notifying EventListener about each of them. 
 
 The [app](https://github.com/tomaszmi/running_median/tree/master/src/app) directory contains code of the main application, in particular:
- * [RunningMedianMain](https://github.com/tomaszmi/running_median/blob/master/src/app/RunningMedianMain.cpp implements a dedicated EventListener called MedianCalculatingEventListener which translates each received Event object to appropriate call to the MedianCalculator object. It defines the "main" routine creating MedianCalculatingEventListener object and passing it to the started event loop.  
+ * [RunningMedianMain](https://github.com/tomaszmi/running_median/blob/master/src/app/RunningMedianMain.cpp) implements a dedicated EventListener called MedianCalculatingEventListener which translates each received Event object to appropriate call to the MedianCalculator object. It defines the "main" routine creating MedianCalculatingEventListener object and passing it to the started event loop.  
 
 The [tests](https://github.com/tomaszmi/running_median/tree/master/tests) directory contains unit tests covering functionality of median and events.
 
