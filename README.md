@@ -81,58 +81,78 @@ $ ./src/app/running_median < src/app/example_input.txt
 $
 ```
 
-# Algorithm
+# Algorithm Calculating Median
 
-TODO (how the problem has been solved, rationale, etc...)
-
-## Receipt
+## Concept
 
 Algorithm maintains two balanced buckets of numbers:
  * lower half - keeping numbers less than or equal to the current median value
  * upper half - keeping numbers greater than or equal to the current median value
 
 Algorithm has access to the **top** elements from both halfs. The top element from the lower half has the biggest value from all values sitting in that bucket. The top element from the upper half has the lowest value from all values sitting there.    
-When a new number comes in the algorithm determines whether it should be put to the lower half or the uper half by comparing it with both tops. If the number is less than lower half's top it goes to the lower half bucket, otherwise goes to the upper half bucket. The buckets may differ in size by up to two elements. If they differ by exactly two elements they are balanced. The balancing is performed right after inserting the new value and relies on moving the top element from the bigger bucket to the smaller bucket. After balancing bucket are equal in size. 
+When a new number comes in the algorithm determines whether it should be put to the lower half or the uper half by comparing it with both tops. If the number is less than lower half's top it goes to the lower half bucket, otherwise goes to the upper half bucket. The buckets may differ in size by up to two elements. If they differ by exactly two elements they are balanced. The balancing is performed right after inserting the new value and relies on moving the top element from the bigger bucket to the smaller bucket. After balancing bucket are equal in size.
 
-## Complexity
+Calculating median:
+If the bucket sizes differ (by one) the median is equal to the top value of the bigger bucket, otherwise (sizes are equal) the median is equal to the arithmetic mean of two tops. If buckets are empty the median is **NAN** (https://en.wikipedia.org/wiki/NaN). Puting the same into a pseudo code:
 
-# Code Structure
+```
+calculate_median(lower, upper):
+   if size(lower) > size(upper)
+      return top(lower)
+   if size(upper) > size(lower)
+      return top(upper)
+   if size(lower) == size(upper) and size(lower) > 0
+      return (top(lower) + top(upper))/2
+   return NAN
 
-## Heap
+```
 
- * running_median/src/median/HeapStorage.h
+Important observations:
+ * access to the top element must be fast
+ * inserting and deleting top element must be fast and efficient
+ * elements in the buckets do not need to be sorted
 
-   Implements extensible buffer of contiguous memory (pseudo vector but limited to some POD types only).
+## Implementation
 
- * running_median/src/median/Heap.h
+The buckets are implemented with [Binary Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) data structure. The lower and upper buckets are respectively Max Heap and Min Heap.
+The implementation has been done according to the book "Introduction to Algorithms" by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein.
 
-   Implements basic Heap data structure (MaxHeap and MinHeap)
+## Time Complexity
 
-## MedianCalculator
+ * Getting the top element:   
+   O(1) operation - it relies on reading the first element from the underlying contiguous memory
+ * Inserting a new top element:   
+   O(log n) operation - it relies on inserting the element at the end of the underlying contiguous memory and traversing the Binary Tree bottom-up exactly "log n" times. At each step there is a single comparison and swap of two elements provided.
+ * Deleting top element:   
+   O(log n) operation - it relies on swapping first and last element in the underlying contiguous memory, deleting the last element and traversing the Binary Tree top down up to "log n" times. At each step there are three comparisons and a single swap of two elements performed.
 
- * running_median/src/median/MedianCalculator.h
+Summarizing:
+ * Inserting a new element to the set has ***O(log n)*** complexity.
+ * Calculating median value has ***O(1)*** complexity.
 
-   Fast heap-based median calculator implementation
+# Code Structure 
 
-## Events
+The [median](https://github.com/tomaszmi/running_median/tree/master/src/median) directory contains an implementation of the Heap data structure and the MedianCalculator, in particular:
+ * [HeapStorage](https://github.com/tomaszmi/running_median/blob/master/src/median/HeapStorage.h) implements extensible buffer of contiguous memory limited to some POD types only used as a storage for Heap implementation.
+ * [HeapStorageTypeTraits](https://github.com/tomaszmi/running_median/blob/master/src/median/HeapStorageTypeTraits.h) is a utility used in order to limit HeapStorage implementation for a subset of POD types.
+ * [Heap](https://github.com/tomaszmi/running_median/blob/master/src/median/Heap.h) implements on top of HeapStorage the Binary Heap data structure.
+ * [Comparators](https://github.com/tomaszmi/running_median/blob/master/src/median/Comparators.h) defines comparison functors used to implement MaxHeap and MinHeap by specializing Heap template class.
+ * [MedianCalculator](https://github.com/tomaszmi/running_median/blob/master/src/median/MedianCalculator.h) implements heap-based median calculator.
 
- * running_median/src/events/Event.h
+The [events](https://github.com/tomaszmi/running_median/tree/master/src/events) directory contains an implementation of the event loop function reading input sequence and generating a set of corresponding events received by the provided listener, in particular:
+ * [Event](https://github.com/tomaszmi/running_median/blob/master/src/events/Event.h) represents either:
+  ** new value being received
+  ** request to calculate median
+  ** sequence end
+ * [EventListener](https://github.com/tomaszmi/running_median/blob/master/src/events/EventListener.h) abstracts and represents receiver of the generated Event objects
+ * [EventLoop](https://github.com/tomaszmi/running_median/blob/master/src/events/EventLoop.h) input sequence reader building a set of Event objects and notifying EventListener about each of them. 
 
-   Represents new value, median calculation request or calculator reset.
+The [app](https://github.com/tomaszmi/running_median/tree/master/src/app) directory contains code of the main application, in particular:
+ * [RunningMedianMain](https://github.com/tomaszmi/running_median/blob/master/src/app/RunningMedianMain.cpp implements a dedicated EventListener called MedianCalculatingEventListener which translates each received Event object to appropriate call to the MedianCalculator object. It defines the "main" routine creating MedianCalculatingEventListener object and passing it to the started event loop.  
 
- * running_median/src/events/EventListener.h
+The [tests](https://github.com/tomaszmi/running_median/tree/master/tests) directory contains unit tests covering functionality of median and events.
 
-   Abstracted receiver of an Event
-
- * running_median/src/events/EventLoop.h
-
-   Main loop (the hearth) processesing standard input and builds Event objects out of it and notifies provided EventListener
-
-## Application
-
- * running_median/src/app/RunningMedianMain.cpp
-
-   Implements EventListener which translates received Event objects to calls to MedianCalculator object. Runs main event loop passing this custom EventListener implementation.
+The [performance](https://github.com/tomaszmi/running_median/tree/master/performance) directory contains benchmarking code, comparing various implementation of median calculators. 
 
 # Running Tests
 
