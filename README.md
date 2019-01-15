@@ -137,10 +137,11 @@ The most crucial heap operations are:
 
 Summarizing:
 
-|              | Get top | Delete top |   Insert   | Calc median |
-|--------------|---------|------------|------------|-------------|
-| average case |   O(1)  |  O(log n)  |    O(1)    |     O(1)    |
-| worst case   |   O(1)  |  O(log n)  |  O(log n)  |     O(1)    |
+|              | Get top | Delete top |   Insert       | Calc median |
+|--------------|---------|------------|----------------|-------------|
+| best case    |   O(1)  |  O(log n)  |      O(1)      |     O(1)    |
+| average case |   O(1)  |  O(log n)  | amortized O(1) |     O(1)    |
+| worst case   |   O(1)  |  O(log n)  |      O(n)      |     O(1)    |
 
 Average case for insertion explained:   
 The elements distribution in a heap of n-elements (of height h=log2 n) is as follows:
@@ -153,6 +154,8 @@ The elements distribution in a heap of n-elements (of height h=log2 n) is as fol
 On average a new value has the probablity 1/2 of being at level h, 1/4 of being at level h-1, 1/8 of being at level h-2. At each level there is one comparison and up to one swap performed, which gives:
 
 avg time = 1/2 * 1 + 1/4*2 + 1/8 * 3 + 1/16 * 4 + ... = sum from k=0 to h of ( 1 / 2pow(k) * (k+1) ) = 2 (converges to 2)
+
+Amortized O(1) means that there is enough capacity in the underlying storage to store yet another element without reallocation (otherwise all elements must be copied which is O(n) operation).
 
 # Code Structure 
 
