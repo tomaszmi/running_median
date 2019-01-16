@@ -153,9 +153,14 @@ The elements distribution in a heap of n-elements (of height h=log2 n) is as fol
 
 On average a new value has the probablity 1/2 of being at level h, 1/4 of being at level h-1, 1/8 of being at level h-2. At each level there is one comparison and up to one swap performed, which gives:
 
+```
 avg time = 1/2 * 1 + 1/4*2 + 1/8 * 3 + 1/16 * 4 + ... = sum from k=0 to h of ( 1 / 2pow(k) * (k+1) ) = 2 (converges to 2)
+```
 
 Amortized O(1) means that there is enough capacity in the underlying storage to store yet another element without reallocation (otherwise all elements must be copied which is O(n) operation).
+
+Worst case for insertion exaplained:
+When there is not enough capacity when inserting yet another element, there must be a memory allocation performed and all so far collected elements must be copied from the old location to the newly allocated one which is O(n) operation.
 
 # Code Structure 
 
