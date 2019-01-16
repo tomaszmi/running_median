@@ -54,9 +54,9 @@ $ ninja
 ```
 
 The above command builds all available targets, in particular:
- * main application (target **running_median**)
- * all available tests (target **running_median_tests**)
- * benchmarking application (target **running_median_benchmark**)
+ * main application (target: **running_median**)
+ * all available tests (target: **running_median_tests**)
+ * benchmarking application (target: **running_median_benchmark**)
 
 In order to use clang compiler it is necessary to set CC and CXX environment variables to accordingly clang and clang++.
 On linux cmake uses GNU Makefile as the default generator if -G option is not provided:
@@ -101,7 +101,7 @@ Calculator has access to the **top** elements from both halfs. The top element f
 When a new number comes in the algorithm determines whether it should be placed to the lower half or the uper half by comparing it with both tops. If the number is less than lower half's top it goes to the lower half bucket, otherwise goes to the upper half bucket. The buckets may differ in size by up to two elements. If they differ by exactly two elements they are balanced. The balancing is performed right after inserting the new value and relies on moving the top element from the bigger bucket to the smaller bucket. After balancing bucket are equal in size.
 
 Calculating median:
-If the bucket sizes differ (by one) the median is equal to the top value of the bigger bucket, otherwise (sizes are equal) the median is equal to the arithmetic mean of two tops. If buckets are empty the median is **NAN** (https://en.wikipedia.org/wiki/NaN). Puting the same into a pseudo code:
+If the bucket sizes differ (by one) the median is equal to the top value of the bigger bucket, otherwise (sizes are equal) the median is equal to the arithmetic mean of two tops. If buckets are empty the median is [**NAN**](https://en.wikipedia.org/wiki/NaN). The following pseudo code implements that procedure:
 
 ```
 calculate_median(lower, upper):
