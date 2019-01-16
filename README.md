@@ -55,8 +55,8 @@ $ ninja
 
 The above command builds all available targets, in particular:
  * main application (target **running_median**)
- * all available tests (target **ninja running_median_tests**)
- * benchmarking application (target **ninja running_median_benchmark**)
+ * all available tests (target **running_median_tests**)
+ * benchmarking application (target **running_median_benchmark**)
 
 In order to use clang compiler it is necessary to set CC and CXX environment variables to accordingly clang and clang++.
 On linux cmake uses GNU Makefile as the default generator if -G option is not provided:
