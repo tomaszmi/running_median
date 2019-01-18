@@ -65,7 +65,7 @@ public:
     iterator end() noexcept;
 
 private:
-    void adjustCapacity(size_type length);
+    void adjustCapacity(size_type length, bool force_shrink = false);
 
     T* storage_;
     size_type storage_size_;
@@ -113,14 +113,9 @@ HeapStorage<T>::HeapStorage(HeapStorage&& other) noexcept
 template <typename T>
 HeapStorage<T>& HeapStorage<T>::operator=(const HeapStorage& other)
 {
-    adjustCapacity(0);
-    if (other.storage_size_ > 0)
-    {
-        adjustCapacity(other.storage_size_);
-        std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
-        storage_size_ = other.storage_size_;
-    }
-
+    adjustCapacity(other.storage_size_);
+    std::memcpy(storage_, other.storage_, other.storage_size_ * sizeof(value_type));
+    storage_size_ = other.storage_size_;
     return *this;
 }
 
@@ -184,14 +179,12 @@ typename HeapStorage<T>::const_reference HeapStorage<T>::back() const noexcept
 template <typename T>
 T* HeapStorage<T>::data() noexcept
 {
-    assert(storage_size_ > 0);
     return storage_;
 }
 
 template <typename T>
 const T* HeapStorage<T>::data() const noexcept
 {
-    assert(storage_size_ > 0);
     return storage_;
 }
 
@@ -242,7 +235,7 @@ void HeapStorage<T>::swap(size_type a, size_type b) noexcept
 template <typename T>
 void HeapStorage<T>::shrink_to_fit()
 {
-    adjustCapacity(storage_size_);
+    adjustCapacity(storage_size_, true);
     assert(storage_size_ == storage_capacity_);
 }
 
@@ -301,35 +294,63 @@ typename HeapStorage<T>::iterator HeapStorage<T>::end() noexcept
 }
 
 template <typename T>
-void HeapStorage<T>::adjustCapacity(std::size_t length)
+void HeapStorage<T>::adjustCapacity(size_type length, bool force_shrink)
 {
-    if (length == storage_capacity_)
-    {
-        return;
-    }
-    if (length == 0)
-    {
-        if (storage_)
-        {
-            delete[] storage_;
-            storage_ = nullptr;
-            storage_size_ = 0;
-            storage_capacity_ = 0;
-        }
-        return;
-    }
+    /*
+        Possible cases:
 
-    value_type* new_storage = new value_type[length];
-    if (storage_)
-    {
+        1) storage_capacity_ = 0, length = 0
+        2) storage_capacity_ = 0, length > 0
+        3) storage_capacity_ > 0, length = 0
+        4) storage_capacity_ > 0, length > 0 and storage_capacity_ > length
+        5) storage_capacity_ > 0, length > 0 and storage_capacity_ < length
+        6) storage_capacity_ > 0, length > 0 and storage_capacity_ = length
+    */
+
+    auto realloc = [this](size_type length) {
+        value_type* new_storage = new value_type[length];
         std::memcpy(new_storage, storage_, storage_size_ * sizeof(value_type));
         delete[] storage_;
-    }
-    storage_ = new_storage;
-    storage_capacity_ = length;
-    if (length < storage_size_)
+        storage_ = new_storage;
+        storage_capacity_ = length;
+    };
+
+    if (length == storage_capacity_) // case #1 and #6
     {
-        storage_size_ = length;
+        return;
+    }
+    if (storage_capacity_ == 0) // case #2
+    {
+        assert(not storage_);
+        assert(length > 0);
+        // allocate
+        storage_ = new value_type[length];
+        storage_capacity_ = length;
+    }
+    else if (length == 0) // case #3
+    {
+        assert(storage_capacity_ > 0);
+        assert(storage_);
+        delete[] storage_;
+        storage_ = nullptr;
+        storage_capacity_ = 0;
+    }
+    else if (storage_capacity_ > length) // case #4
+    {
+        assert(storage_capacity_ > 0);
+        assert(storage_);
+        if (force_shrink)
+        {
+            realloc(length);
+            storage_size_ = length;
+        }
+    }
+    else // case #5
+    {
+        assert(storage_capacity_ < length);
+        assert(storage_capacity_ > 0);
+        assert(storage_);
+        realloc(length);
     }
 }
 

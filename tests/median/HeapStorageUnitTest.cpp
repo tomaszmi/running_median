@@ -145,6 +145,18 @@ TEST(HeapStorage, clear_changes_size_but_capacity)
     EXPECT_EQ(10U, storage.capacity());
 }
 
+TEST(HeapStorage, shrink_to_fit_does_nothing_if_storage_is_empty)
+{
+    HeapStorage<int> storage;
+    auto storage_ptr = storage.data();
+    EXPECT_EQ(0U, storage.size());
+    EXPECT_EQ(storage.capacity(), storage.size());
+    storage.shrink_to_fit();
+    EXPECT_EQ(0U, storage.size());
+    EXPECT_EQ(storage.capacity(), storage.size());
+    EXPECT_EQ(storage_ptr, storage.data()) << "no reallocation happened";
+}
+
 TEST(HeapStorage, shrink_to_fit_does_nothing_if_size_is_already_equal_to_capacity)
 {
     HeapStorage<int> storage;
@@ -154,8 +166,10 @@ TEST(HeapStorage, shrink_to_fit_does_nothing_if_size_is_already_equal_to_capacit
         storage.push_back(i);
     }
     EXPECT_EQ(storage.capacity(), storage.size());
+    auto storage_ptr = storage.data();
     storage.shrink_to_fit();
     EXPECT_EQ(storage.capacity(), storage.size());
+    EXPECT_EQ(storage_ptr, storage.data()) << "no reallocation happened";
 }
 
 TEST(HeapStorage, shrink_to_fit_allocates_new_memory_with_size_equal_to_storage_size_and_preserves_the_content)
@@ -266,7 +280,7 @@ TEST(HeapStorage, copy_ctor_non_empty_src)
     auto dst = returnCopy(std::move(src));
     EXPECT_NE(srcBegin, dst.begin());
     EXPECT_EQ(3U, dst.size());
-    EXPECT_EQ(3U, dst.capacity()); // capacity is not copied
+    EXPECT_EQ(3U, dst.capacity()) << "implicit shrink to fit";
     EXPECT_THAT(dst, ElementsAreArray(std::initializer_list<int>{1, 2, 3}));
 }
 
@@ -279,7 +293,19 @@ TEST(HeapStorage, copy_assignment_empty_src_and_dst)
     EXPECT_EQ(0U, second.capacity());
 }
 
-TEST(HeapStorage, copy_assignment_non_empty_src_and_dst)
+TEST(HeapStorage, copy_assignment_non_empty_src_but_empty_and_preallocated_dst)
+{
+    HeapStorage<int> first;
+    first.push_back(123);
+    first.push_back(456);
+    HeapStorage<int> second;
+    second.reserve(100);
+    first = second;
+    EXPECT_EQ(0U, first.size());
+    EXPECT_EQ(100U, second.capacity());
+}
+
+TEST(HeapStorage, copy_assignment_non_empty_src_and_dst_and_dest_has_bigger_capacity_than_src)
 {
     HeapStorage<int> first;
     first.push_back(123);
@@ -288,9 +314,45 @@ TEST(HeapStorage, copy_assignment_non_empty_src_and_dst)
     second.push_back(444);
     second.push_back(333);
     second.push_back(1024);
+    EXPECT_EQ(4U, second.capacity());
+    auto storage_ptr = second.data();
+    second = first;
+    EXPECT_EQ(2U, second.size());
+    EXPECT_EQ(4U, second.capacity());
+    EXPECT_EQ(storage_ptr, second.data()) << "no reallocation happened";
+}
+
+TEST(HeapStorage, copy_assignment_non_empty_src_and_dst_and_dest_has_the_same_capacity_as_src)
+{
+    HeapStorage<int> first;
+    first.push_back(123);
+    first.push_back(456);
+    HeapStorage<int> second;
+    second.push_back(444);
+    second.push_back(333);
+    EXPECT_EQ(2U, second.capacity());
+    auto storage_ptr = second.data();
     second = first;
     EXPECT_EQ(2U, second.size());
     EXPECT_EQ(2U, second.capacity());
+    EXPECT_EQ(storage_ptr, second.data()) << "no reallocation happened";
+}
+
+TEST(HeapStorage, copy_assignment_non_empty_src_and_dst_and_dest_has_smaller_capacity_as_src)
+{
+    HeapStorage<int> first;
+    first.push_back(123);
+    first.push_back(456);
+    first.push_back(789);
+    HeapStorage<int> second;
+    second.push_back(444);
+    second.push_back(333);
+    EXPECT_LT(second.capacity(), first.capacity());
+    auto storage_ptr = second.data();
+    second = first;
+    EXPECT_EQ(3U, second.size());
+    EXPECT_EQ(3U, second.capacity());
+    EXPECT_NE(storage_ptr, second.data()) << "reallocation happened";
 }
 
 TEST(HeapStorage, accessors)
