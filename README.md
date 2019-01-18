@@ -194,150 +194,15 @@ The [third_party](https://github.com/tomaszmi/running_median/tree/master/third_p
 
 ```
 $ cd ~/build/
-$ ctest -V
-UpdateCTestConfiguration  from :/home/tmikolajczyk/build/DartConfiguration.tcl
-UpdateCTestConfiguration  from :/home/tmikolajczyk/build/DartConfiguration.tcl
-Test project /home/tmikolajczyk/build
-Constructing a list of tests
-Done constructing a list of tests
-Updating test list for fixtures
-Added 0 tests to meet fixture requirements
-Checking test dependency graph...
-Checking test dependency graph end
-test 1
-    Start 1: running_median_ut
-
-Test command: /home/tmikolajczyk/build/tests/running_median_ut
-Test timeout computed to be: 10000000
-Running main() from /home/tmikolajczyk/running_median/third_party/googletest/googletest/src/gtest_main.cc
-[==========] Running 46 tests from 8 test cases.
-[----------] Global test environment set-up.
-[----------] 18 tests from HeapStorage
-[ RUN      ] HeapStorage.default_constructed_storage_is_empty
-[       OK ] HeapStorage.default_constructed_storage_is_empty (0 ms)
-[ RUN      ] HeapStorage.inserting_and_removing_elements_change_content
-[       OK ] HeapStorage.inserting_and_removing_elements_change_content (0 ms)
-[ RUN      ] HeapStorage.reserve_reallocates_and_preserves_the_content
-[       OK ] HeapStorage.reserve_reallocates_and_preserves_the_content (0 ms)
-[ RUN      ] HeapStorage.reserve_does_nothing_if_new_capacity_is_less_than_current_size
-[       OK ] HeapStorage.reserve_does_nothing_if_new_capacity_is_less_than_current_size (0 ms)
-[ RUN      ] HeapStorage.new_element_doubles_capacity_if_is_already_full
-[       OK ] HeapStorage.new_element_doubles_capacity_if_is_already_full (0 ms)
-[ RUN      ] HeapStorage.clear_changes_size_but_capacity
-[       OK ] HeapStorage.clear_changes_size_but_capacity (0 ms)
-[ RUN      ] HeapStorage.shrink_to_fit_does_nothing_if_size_is_already_equal_to_capacity
-[       OK ] HeapStorage.shrink_to_fit_does_nothing_if_size_is_already_equal_to_capacity (0 ms)
-[ RUN      ] HeapStorage.shrink_to_fit_allocates_new_memory_with_size_equal_to_storage_size_and_preserves_the_content
-[       OK ] HeapStorage.shrink_to_fit_allocates_new_memory_with_size_equal_to_storage_size_and_preserves_the_content (0 ms)
-[ RUN      ] HeapStorage.move_ctor_empty_src
-[       OK ] HeapStorage.move_ctor_empty_src (0 ms)
-[ RUN      ] HeapStorage.move_ctor_non_empty_src
-[       OK ] HeapStorage.move_ctor_non_empty_src (0 ms)
-[ RUN      ] HeapStorage.move_assignment_empty_src_and_dst
-[       OK ] HeapStorage.move_assignment_empty_src_and_dst (0 ms)
-[ RUN      ] HeapStorage.move_assignment_non_empty_src_and_dst
-[       OK ] HeapStorage.move_assignment_non_empty_src_and_dst (0 ms)
-[ RUN      ] HeapStorage.copy_ctor_empty_src
-[       OK ] HeapStorage.copy_ctor_empty_src (0 ms)
-[ RUN      ] HeapStorage.copy_ctor_non_empty_src
-[       OK ] HeapStorage.copy_ctor_non_empty_src (0 ms)
-[ RUN      ] HeapStorage.copy_assignment_empty_src_and_dst
-[       OK ] HeapStorage.copy_assignment_empty_src_and_dst (0 ms)
-[ RUN      ] HeapStorage.copy_assignment_non_empty_src_and_dst
-[       OK ] HeapStorage.copy_assignment_non_empty_src_and_dst (0 ms)
-[ RUN      ] HeapStorage.accessors
-[       OK ] HeapStorage.accessors (0 ms)
-[ RUN      ] HeapStorage.swap
-[       OK ] HeapStorage.swap (0 ms)
-[----------] 18 tests from HeapStorage (0 ms total)
-
-[----------] 1 test from HeapStorageTypeTraits
-[ RUN      ] HeapStorageTypeTraits.isTypeInTheList
-[       OK ] HeapStorageTypeTraits.isTypeInTheList (0 ms)
-[----------] 1 test from HeapStorageTypeTraits (0 ms total)
-
-[----------] 4 tests from MaxHeap
-[ RUN      ] MaxHeap.default_constructed
-[       OK ] MaxHeap.default_constructed (0 ms)
-[ RUN      ] MaxHeap.insert
-[       OK ] MaxHeap.insert (0 ms)
-[ RUN      ] MaxHeap.top
-[       OK ] MaxHeap.top (0 ms)
-[ RUN      ] MaxHeap.pop
-[       OK ] MaxHeap.pop (1 ms)
-[----------] 4 tests from MaxHeap (1 ms total)
-
-[----------] 3 tests from MinHeap
-[ RUN      ] MinHeap.insert
-[       OK ] MinHeap.insert (0 ms)
-[ RUN      ] MinHeap.top
-[       OK ] MinHeap.top (0 ms)
-[ RUN      ] MinHeap.pop
-[       OK ] MinHeap.pop (0 ms)
-[----------] 3 tests from MinHeap (0 ms total)
-
-[----------] 10 tests from MedianCalculator
-[ RUN      ] MedianCalculator.lowerHalf_and_upperHalf_selection
-[       OK ] MedianCalculator.lowerHalf_and_upperHalf_selection (0 ms)
-[ RUN      ] MedianCalculator.balance_does_nothing_if_sizes_are_equal
-[       OK ] MedianCalculator.balance_does_nothing_if_sizes_are_equal (0 ms)
-[ RUN      ] MedianCalculator.balance_does_nothing_if_sizes_differs_in_less_than_2
-[       OK ] MedianCalculator.balance_does_nothing_if_sizes_differs_in_less_than_2 (0 ms)
-[ RUN      ] MedianCalculator.balance_moves_values_from_lowerHalf_to_upperHalf_if_lowerHalf_is_bigger
-[       OK ] MedianCalculator.balance_moves_values_from_lowerHalf_to_upperHalf_if_lowerHalf_is_bigger (0 ms)
-[ RUN      ] MedianCalculator.balance_moves_values_from_upperHalf_to_lowerHalf_if_upperHalf_is_bigger
-[       OK ] MedianCalculator.balance_moves_values_from_upperHalf_to_lowerHalf_if_upperHalf_is_bigger (0 ms)
-[ RUN      ] MedianCalculator.median_of_empty_set_is_nan
-[       OK ] MedianCalculator.median_of_empty_set_is_nan (0 ms)
-[ RUN      ] MedianCalculator.median_of_equal_sets_is_a_mean_of_tops
-[       OK ] MedianCalculator.median_of_equal_sets_is_a_mean_of_tops (0 ms)
-[ RUN      ] MedianCalculator.running_median_for_fixed_values
-[       OK ] MedianCalculator.running_median_for_fixed_values (0 ms)
-[ RUN      ] MedianCalculator.reset_restarts_calculation
-[       OK ] MedianCalculator.reset_restarts_calculation (0 ms)
-[ RUN      ] MedianCalculator.test_calculateReferenceMedianValue_sort_based
-[       OK ] MedianCalculator.test_calculateReferenceMedianValue_sort_based (0 ms)
-[ RUN      ] MedianCalculator.test_calculateReferenceMedianValue_nth_element_based
-[       OK ] MedianCalculator.test_calculateReferenceMedianValue_nth_element_based (0 ms)
-[----------] 10 tests from MedianCalculator (0 ms total)
-
-[----------] 1 test from MedianCalculatorRegression
-[ RUN      ] MedianCalculatorRegression.running_median_for_randomly_generated_numbers
-[       OK ] MedianCalculatorRegression.running_median_for_randomly_generated_numbers (11 ms)
-[----------] 1 test from MedianCalculatorRegression (11 ms total)
-
-[----------] 3 tests from EventLoop
-[ RUN      ] EventLoop.empty_input
-[       OK ] EventLoop.empty_input (0 ms)
-[ RUN      ] EventLoop.eol_input
-[       OK ] EventLoop.eol_input (0 ms)
-[ RUN      ] EventLoop.valid_input
-[       OK ] EventLoop.valid_input (0 ms)
-[----------] 3 tests from EventLoop (0 ms total)
-
-[----------] 6 tests from EventLoopTestParametrized/EventLoopTest
-[ RUN      ] EventLoopTestParametrized/EventLoopTest.invalid_input/0
-[       OK ] EventLoopTestParametrized/EventLoopTest.invalid_input/0 (0 ms)
-[ RUN      ] EventLoopTestParametrized/EventLoopTest.invalid_input/1
-[       OK ] EventLoopTestParametrized/EventLoopTest.invalid_input/1 (0 ms)
-[ RUN      ] EventLoopTestParametrized/EventLoopTest.invalid_input/2
-[       OK ] EventLoopTestParametrized/EventLoopTest.invalid_input/2 (0 ms)
-[ RUN      ] EventLoopTestParametrized/EventLoopTest.invalid_input/3
-[       OK ] EventLoopTestParametrized/EventLoopTest.invalid_input/3 (0 ms)
-[ RUN      ] EventLoopTestParametrized/EventLoopTest.invalid_input/4
-[       OK ] EventLoopTestParametrized/EventLoopTest.invalid_input/4 (0 ms)
-[ RUN      ] EventLoopTestParametrized/EventLoopTest.invalid_input/5
-[       OK ] EventLoopTestParametrized/EventLoopTest.invalid_input/5 (0 ms)
-[----------] 6 tests from EventLoopTestParametrized/EventLoopTest (0 ms total)
-
-[----------] Global test environment tear-down
-[==========] 46 tests from 8 test cases ran. (12 ms total)
-[  PASSED  ] 46 tests.
-1/1 Test #1: running_median_ut ................   Passed    0.01 sec
+$ ctest 
+Test project ~/build
+    Start 1: running_median_tests
+1/1 Test #1: running_median_tests .............   Passed    0.01 sec
 
 100% tests passed, 0 tests failed out of 1
 
 Total Test time (real) =   0.01 sec
+$
 ```
 
 # Running Benchmark Application
