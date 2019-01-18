@@ -135,16 +135,19 @@ T Heap<T, Compare>::top() const noexcept
 template <typename T, typename Compare>
 void Heap<T, Compare>::heapify(size_type index) noexcept
 {
+    auto compare = [this](size_type lhs, size_type rhs){
+        return rhs <= (size() - 1) and cmp_(this->operator[](lhs), this->operator[](rhs));
+    };
     while (true)
     {
         auto l = left(index);
         auto r = right(index);
         auto selected = index;
-        if (l <= (this->size() - 1) and cmp_(this->operator[](selected), this->operator[](l)))
+        if(compare(selected, l))
         {
             selected = l;
         }
-        if (r <= (this->size() - 1) and cmp_(this->operator[](selected), this->operator[](r)))
+        if(compare(selected, r))
         {
             selected = r;
         }
