@@ -26,7 +26,7 @@ A sequence of floating point numbers separated by a single space, where each num
 
 ### Additional Notes
 
-The implementation must be written in C/C++ and in case of C++ is allowed to use only C++ Standard I/O Library. In particular must not use Standard Library algorithms and data structures. The designed algorithm must be optimized in terms of time. Its complexity should be estimated and justified. The code should be clean, well structured and tested using any testing framework. 
+The implementation must be written in C/C++ and in case of C++ it is allowed to use only C++ Standard I/O Library. In particular you must not use Standard Library algorithms and data structures. The designed algorithm must be optimized in terms of time. Its complexity should be estimated and justified. The code should be clean, well structured and tested using any testing framework. 
 
 # Solution
 
